@@ -1,0 +1,80 @@
+webservices = SOAP, REST ou XML-RPC (dados através da rede)
+API = consumir interface, funciona como um adaptador.
+Se comunica obrigatoriamente via rede, geralmente com protocolo HTTP.
+Hyper Text Transfer Protocol = HTTP. HTML mais comum
+
+Clica em um link = método GET do HTTP. Enviar forumalário POST
+Get = ler , Post = Inserir, Put = Alterar, Delete = Remover
+Retorno Json ou XML.
+
+URI = Uniform Resource Identifier (identificador uniforme de recursos)
+Ex path: usuarios/Danilo/postagens, /usuarios/{nome}/postagens/{id}
+
+URI com recurso único(Instance) ou URI contendo vários recusos chamado coleção(Collection)
+ex: /postagens/{id} = Instância
+    /postagens = Coleção
+
+Parâmetros de consulta = Query Parameters. Paginação: limit e offset
+Limit = Quantidade de limite de elementos
+Offset = Quantidade de elementos pulados 
+Ex: /postagens?limit=10&offset=30
+offset = 30 = pular 30 primeiras linhas do bd
+/postagens?ano=2018&limit=10&offset=30
+
+Relação:
+CRUD   | HTTP
+Create   Post
+Read     Get
+Update   Put
+Delete   Delet
+
+status code = ajuda a entender o erro ex: 200 sucesso, 500 server error, 404 not found
+
+Como saber se json ou xml? pelo parâmetro do Header chamdo Content-Type.
+text/xml ou application/json
+
+Autenticação:
+
+Normal
+
+Cliente       X       Servidor
+User/pwd      ->
+              <-      Token session
+Token session ->
+
+Toda requisição ao servidor depois de autenticado exigi enviar o session token.
+
+Rest API 
+
+São Stateless (não mentem estado, por isso nao guarda session token)
+Para isso: Basic Auth
+
+Enviar usuário e senha em toda requisição no header codigicado em base64
+Ex: Basic 2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
+
+Deve só utilizar https:// em basic, pois se nao qualquer um terá acesso.
+
+Vantagens:
+Simples, servidor Stateless, suportado por todos os browsers
+Desvantagem:
+Apenas Https, sujeito a ataques, deslogar é complicado.
+
+[x ** 3 for x in range(5)]
+result = 0^3, 1^3, 2^3, 3^3, 4^3
+
+10 % 3 # resto 1, se der resto é impar
+
+print([n for n in range(11) if n % 2 == 0])
+result = [0,2,4,6,8,10]
+
+Para cada n in até 10, se n for par (n%2)
+
+string.strip() # tira espaços
+string.lower() # tudo minusculo
+string.upper() # tudo maiusculo
+string.capitalize() # primeira letra maiuscula
+string.title() # toda primeira letra maiuscula
+
+lista = [' Ana', 'manuela', 'FELIpe', 'PedrO']
+
+lista_normalizadas = [pessoa.strip().capitalize() for pessoa in lista]
