@@ -1,0 +1,1 @@
+#Serve pra dizer que é um pacote, ou lib, módulo etc

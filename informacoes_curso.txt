@@ -78,3 +78,28 @@ string.title() # toda primeira letra maiuscula
 lista = [' Ana', 'manuela', 'FELIpe', 'PedrO']
 
 lista_normalizadas = [pessoa.strip().capitalize() for pessoa in lista]
+
+super() = Serve para pegar iniciar funções da classe herdada
+Ex: 
+def __init__(self, nome, salario):
+    super().__init__(nome, salario) #pegando o init da classe herdada.
+
+args e kwargs:
+Args
+Ex: def metodo(arg1, arg2, arg3, arg4):
+    return arg1+arg2+arg4
+Para facilitar:
+def soma_simples(*args):
+    return sum(args)
+    #nao sabe quandos argumentos vai receber
+soma_simples(1,2,3,4,5,5) #quantos quiser
+
+kwargs:
+def metodo_k(*args, **kwargs):
+    print(args)
+    print(kwargs)
+metodo(3,'qualquer',nome='Ana',idade=25)
+kwargs = com chave e valor, retorna um dict. Args antes de kwargs.
+
+Decoradores: 
+Embrulha a função entre funções.
