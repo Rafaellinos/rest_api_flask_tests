@@ -1,43 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.hotel import HotelModel
-"""
-reqparse:
-    RequestParser:
-        adiciona os argumentos vindos do JSON
-"""
-"""
-#lista nao será mais usada
-hoteis = [
-    {
-        'hotel_id': 'alpha',
-        'nome': 'Alpha Hotel',
-        'estrelas': 4.3,
-        'diaria': 420.32,
-        'cidade': 'Rio de Janeiro'
-    },
-    {
-        'hotel_id': 'bravo',
-        'nome': 'Bravo Hotel',
-        'estrelas': 5,
-        'diaria': 1000.00,
-        'cidade': 'Santa Cataria'
-    },
-    {
-        'hotel_id': 'beta',
-        'nome': 'Beta Hotel',
-        'estrelas': 3.1,
-        'diaria': 500.21,
-        'cidade': 'São Paulo'
-    },
-    {
-        'hotel_id': 'charlie',
-        'nome': 'Charlie Hotel',
-        'estrelas': 3.9,
-        'diaria': 321.11,
-        'cidade': 'Bahia'
-    }
-]
-"""
+
 
 class Hoteis(Resource):
     #Primeiro recurso da API,
@@ -53,13 +16,6 @@ class Hotel(Resource):
     argumentos.add_argument('estrelas', type=float, required=True, help='The field estrelas cannot be blank')
     argumentos.add_argument('diaria')
     argumentos.add_argument('cidade')
-
-    #procura e retorna hotel
-    #def find_hotel(hotel_id):
-    #    for hotel in hoteis:
-    #        if hotel['hotel_id'] == hotel_id:
-    #            return hotel
-    #    return None
 
     def get(self, hotel_id):
         hotel = HotelModel.find_hotel(hotel_id)
@@ -77,30 +33,25 @@ class Hotel(Resource):
             hotel_objeto.save_hotel()
         except:
             return {'message': 'An internal error ocurred trying to save hotel.'}, 500 #intel server error
-        #novo_hotel = hotel_objeto.json()
-        #**kwargs descompactado vindo o parse
-        #novo_hotel = {'hotel_id': hotel_id, **dados}
 
-        #hoteis.append(novo_hotel)
-        
-        #return novo_hotel, 200
         return hotel_objeto.json(), 201
 
 
     def put(self, hotel_id):
+        #parse dos objetos passados pra classe
         dados = Hotel.argumentos.parse_args()
-        #novo_hotel = {'hotel_id': hotel_id, **dados}
-        #hotel_objeto = HotelModel(hotel_id, **dados)
-        #novo_hotel = hotel_objeto.json()
+        #procura no bd o hotel
         hotel_encontrado = HotelModel.find_hotel(hotel_id)
         if hotel_encontrado:
+            #Se encontrado, update
             hotel_encontrado.update_hotel(**dados)
             try:
+                #salva o update no bd
                 hotel_encontrado.save_hotel()
             except:
                 return {'message': 'An internal error ocurred trying to save hotel.'}, 500 #intel server error
             return hotel_encontrado.json(), 200
-        #hoteis.append(hotel_objeto)
+        #caso hotel não tenha sido encontrado, salva um novo
         hotel = HotelModel(hotel_id, **dados)
         try:
             hotel.save_hotel()
