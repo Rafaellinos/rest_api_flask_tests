@@ -26,6 +26,13 @@ class UserModel(banco.Model): #define que cada nome será uma coluna
         if user:
             return user
         return None
+    @classmethod
+    def find_by_login(cls, login):
+        #cls pega metodo da classe, metodo presente na classe estendiada banco.Model
+        user = cls.query.filter_by(login=login).first()
+        if user:
+            return user
+        return None
 
     def save_user(self): #sava os dados no bd
         banco.session.add(self)
