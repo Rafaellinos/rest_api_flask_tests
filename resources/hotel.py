@@ -1,34 +1,10 @@
 from flask_restful import Resource, reqparse
 from models.hotel import HotelModel
+from resources.filtros import normalize_path_params, consulta_com_cidade, consulta_sem_cidade
 from flask_jwt_extended import jwt_required
 import sqlite3
 
-def normalize_path_params(cidade=None,
-                          estrelas_min = 0,
-                          estrelas_max = 5,
-                          diaria_min = 0,
-                          diaria_max = 10000,
-                          limit = 50,
-                          offset = 0,
-                          **dados):
-    if cidade:
-        return {
-            'estrelas_min': estrelas_min,
-            'estrelas_max': estrelas_max,
-            'diaria_min': diaria_min,
-            'diaria_max': diaria_max,
-            'cidade': cidade,
-            'limit': limit,
-            'offset': offset
-            }
-    return {
-        'estrelas_min': estrelas_min,
-        'estrelas_max': estrelas_max,
-        'diaria_min': diaria_min,
-        'diaria_max': diaria_max,
-        'limit': limit,
-        'offset': offset
-    }
+
 
 # path /hoteis?cidade=Rio de Janeiro&estrelas_min4&diaria_max=400
 path_params = reqparse.RequestParser()
@@ -52,19 +28,11 @@ class Hoteis(Resource):
         dados_validos = {chave: dados[chave] for chave in dados if dados[chave] is not None}
         parametros = normalize_path_params(**dados_validos) #devolve valores normalizados(ordem, com cidade ou sem cidade)
         if not parametros.get('cidade'): #se tiver cidade
-            consulta = "SELECT * FROM hotel " \
-                       "WHERE (estrelas > ? and estrelas < ?) " \
-                       "and (diaria > ? and diaria < ?) " \
-                       "LIMIT ? OFFSET ?" #query
             tupla = tuple([parametros[chave] for chave in parametros]) #pega só os valores do parâmetro
-            resultado = cursor.execute(consulta, tupla)
+            resultado = cursor.execute(consulta_sem_cidade, tupla)
         else:
-            consulta = "SELECT * FROM hotel " \
-                       "WHERE (estrelas > ? and estrelas < ?) " \
-                       "and (diaria > ? and diaria < ?) " \
-                       "and cidade = ? LIMIT ? OFFSET ?" #query
             tupla = tuple([parametros[chave] for chave in parametros])  # pega só os valores do parâmetro
-            resultado = cursor.execute(consulta, tupla)
+            resultado = cursor.execute(consulta_com_cidade, tupla)
         hoteis = []
         for linhas in resultado:
             hoteis.append({
